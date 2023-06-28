@@ -1,5 +1,7 @@
+import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { SearchbarHeader, SearchForm, SearchFormButton, SearchFormButtonLabel, SearchFormInput } from './Searchbar.styled';
+import { SlMagnifier } from 'react-icons/sl';
 
 const Searchbar = ({onSubmit}) => {
   const handleSubmit = async (values, actions) => {
@@ -16,7 +18,7 @@ const Searchbar = ({onSubmit}) => {
                 <SearchbarHeader>
                   <SearchForm>
                     <SearchFormButton type="submit" disabled={isSubmitting}>
-                      <SearchFormButtonLabel>S</SearchFormButtonLabel>
+                      <SlMagnifier/>
                     </SearchFormButton>
 
                     <SearchFormInput
@@ -29,6 +31,10 @@ const Searchbar = ({onSubmit}) => {
                   </SearchForm>
                 </SearchbarHeader>}
         </Formik>
+};
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired
 };
 
 export default Searchbar;
