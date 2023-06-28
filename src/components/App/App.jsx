@@ -13,25 +13,25 @@ export class App extends Component {
     error: null,
     page: 1,
     value: "",
-    isLoadMore: false
+    total: 0
   };
 
-  async componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(_, prevState) {
     const { value, page } = this.state;
     
     if (prevState.value !== value || prevState.page !== page) {
       try {
-        this.setState({ isLoading: true, isLoadMore: false });
+        this.setState({ isLoading: true });
         const response = await getPhotos(value, page);
 
-        if (response.length === 0) {
-          alert(`Sorry, the photos of you requested: ${value} did not found.`)
+        if (response.hits.length === 0) {
+          return alert(`Sorry, the photos of you requested: ${value} did not found.`)
         }
         
-        this.setState(({photos}) => {
-          return {photos: [...photos, ...response.hits],
-          isLoadMore: true}
-        });
+        this.setState(({ photos }) => ({
+            photos: [...photos, ...response.hits],
+            total: response.totalHits
+          }));
 
       } catch (error) {
         this.setState({ error });
@@ -42,7 +42,10 @@ export class App extends Component {
     };
   };
 
-  onSubmit = ({value}) => {
+  onSubmit = ({ value }) => {
+    if (value.trim() === "") {
+      return alert('The string without value')
+    }
     this.setState({
       value,
       photos: [],
@@ -55,8 +58,8 @@ export class App extends Component {
   };
 
   render() {
-    const { photos, isLoading, error, isLoadMore } = this.state;
-
+    const { photos, isLoading, error, total } = this.state;
+    const allPages = total / photos.length;
     return (
       <AppField>
         <Searchbar onSubmit={this.onSubmit} />
@@ -69,8 +72,7 @@ export class App extends Component {
                       />}
         {error && <h2>Can not download pgotos</h2>}
         {photos.length > 1 && <ImageGallery items={photos} />}
-        {isLoadMore && <Button onClick={this.onLoadMore}/>}
-
+        {allPages > 1 && !isLoading && photos.length !== 0 && <Button onClick={this.onLoadMore}/>}
       </AppField>
     );
   };

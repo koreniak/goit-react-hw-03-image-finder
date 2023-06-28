@@ -15,19 +15,19 @@ class ImageGalleryItem extends Component {
   };
 
   render() {
-    const { smallImageURL, largeImageURL, tags } = this.props;
+    const { smallImageURL, largeImageURL, alt } = this.props;
     const { showModal } = this.state;
 
     return <GalleryItem onClick={this.toggleModal} >
-            <GalleryImage src={smallImageURL} alt={tags} />
-            {showModal && <Modal onClose={this.toggleModal}><img src={largeImageURL} alt={tags} /></Modal>}
+            <GalleryImage src={smallImageURL} alt={alt} />
+            {showModal && <Modal onClose={this.toggleModal}><img src={largeImageURL} alt={alt} /></Modal>}
           </GalleryItem>
   };
 };
 
 ImageGalleryItem.propTypes = {
     smallImageURL: PropTypes.string.isRequired,
-    tags: PropTypes.string,
+    alt: PropTypes.string.isRequired,
     largeImageURL: PropTypes.string.isRequired,
 };
 

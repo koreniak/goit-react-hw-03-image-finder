@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
-import { SearchbarHeader, SearchForm, SearchFormButton, SearchFormButtonLabel, SearchFormInput } from './Searchbar.styled';
+import { SearchbarHeader, SearchForm, SearchFormButton, SearchFormInput } from './Searchbar.styled';
 import { SlMagnifier } from 'react-icons/sl';
 
 const Searchbar = ({onSubmit}) => {
-  const handleSubmit = async (values, actions) => {
-    await onSubmit(values);
+  const handleSubmit = (values, actions) => {
+    onSubmit(values);
     actions.setSubmitting(false);
     actions.resetForm();
   };
